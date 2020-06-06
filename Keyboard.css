@@ -4,14 +4,14 @@
 	left:0;
 	bottom:0;
 	width:100%;
-	padding:1em 0;
+	padding:2em 0;
 	background:black;
 	user-select:none;
 	transition:bottom 0.4s;
-	height:50vh;
+	height:45vh;
 }
 
-.keyboard-hidden
+.keyboard-hidden2
 {
 	bottom:-100%;
 }	
@@ -21,15 +21,14 @@
 }
 .keyboard-keys button
 {
-	height: 2em;
-    width: 1.5em;
-    max-width: 90px;
+	height: 2.5em;
+    width: 1.7em;
     margin: 3px;
     border-radius: 4px;
     border: none;
     background: rgba(255, 255, 255, 0.2);
     color: #ffffff;
-    font-size: 1.05rem;
+    font-size: 0.7em;
     outline: none;
     cursor: pointer;
     display: inline-flex;
@@ -43,8 +42,8 @@
 
 .iconkeyboard
 {
-	width:1.5em;
-	height:1.5em;
+	width:1em;
+	height:1.3em;
 }
 
 #keyspacebar
