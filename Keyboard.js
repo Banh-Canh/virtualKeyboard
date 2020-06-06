@@ -249,10 +249,8 @@ function keyboardOpener()
 
 window.addEventListener("DOMContentLoaded",createkeys);
 
-
-
-
-function addCssFile(fileName) {
+function addCssFile(fileName) 
+{
 
   var head = document.head;
   var link = document.createElement("link");
@@ -263,5 +261,3 @@ function addCssFile(fileName) {
 
   head.appendChild(link);
 }
-
-
