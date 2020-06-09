@@ -1,4 +1,4 @@
-window.addEventListener("DOMContentLoaded",TKVHvk_createKeyboard);
+window.addEventListener("DOMContentLoaded",TKVHvk_detectInputTexts);
 
 function TKVHvk_getKeyboardProperties()   //centralize the keyboard layout variables, just in case I want to make multiple version in the futur (ex QWERTY)
 {
@@ -14,9 +14,10 @@ function TKVHvk_setDefaultKeys()
 		const y = x[0];	
 		const z = x[1];		
 		
-	for (var i=0; i<z.length; i++) 
+	for (var i=0; i<y.length; i++) 
 	{
 		z[i].textContent = y[i];
+		console.log("default keys setting ... ");
 	}
 	console.log("default keys set ... done");
 }
@@ -45,161 +46,9 @@ function TKVHvk_detectInputTexts()		//detect all ekements where text inputs are 
 		console.log("adding listener to input text/textarea...");
 	}
 	console.log("adding listener to input text/textarea... done");			//not working in mozilla temporary extension mode	//it doesnt go there, yet ...?
+	return TKVHvk_allTextInputs;
 }
 	
-function TKVHvk_createKeyboard()			//create the keyboard and add mousedown listeners
-{
-	//create main element
-	const TKVHvk_keyboard = document.createElement("div");
-	const TKVHvk_keysContainer = document.createElement("div");
-	
-	//Setup main elements
-	TKVHvk_keyboard.classList.add("TKVHvk_keyboard","TKVHvk_keyboardHidden");
-	TKVHvk_keyboard.id = "TKVHvk_keyboard"
-	TKVHvk_keysContainer.classList.add("TKVHvk_keysContainer");
-	
-	//Add to DOMContentLoaded
-	TKVHvk_keyboard.appendChild(TKVHvk_keysContainer);
-	document.body.appendChild(TKVHvk_keyboard);
-	
-	/////
-	
-	const TKVHvk_fragment = document.createDocumentFragment();
-	const x = TKVHvk_getKeyboardProperties();
-		const y = x[0];
-		const z = x[1];
-	
-	y.forEach(key => 
-	{
-		const TKVHvk_keyElement = document.createElement("button");
-		const TKVHvk_insertLineBreak = ["$","!"].indexOf(key) !== -1;
-		const TKVHvk_insertBackSpace = ["="].indexOf(key) !== -1;
-		const TKVHvk_insertEnterShift = ["*"].indexOf(key) !== -1;
-		const TKVHvk_insertSpace = ["@"].indexOf(key) !== -1;
-		
-		//Add attributes/classes
-		TKVHvk_keyElement.setAttribute("type","button");
-		TKVHvk_keyElement.classList.add("TKVHvk_keyButton");
-		TKVHvk_fragment.appendChild(TKVHvk_keyElement);
-		
-		if (TKVHvk_insertBackSpace)
-		{
-			const TKVHvk_backSpace = document.createElement("button")
-			TKVHvk_fragment.appendChild(TKVHvk_backSpace);
-			TKVHvk_backSpace.id = "TKVHvk_keyBackSpace";
-			TKVHvk_backSpace.setAttribute("type","button");
-			var TKVHvk_imgBackSpace = document.createElement("img");
-			TKVHvk_backSpace.appendChild(TKVHvk_imgBackSpace);
-			TKVHvk_imgBackSpace.src = 'images/backspace_white_192x192.png';
-			TKVHvk_imgBackSpace.classList.add("TKVHvk_iconKeyboard");
-			TKVHvk_fragment.appendChild(document.createElement("br"));
-			
-			console.log("backspace inserted... done");
-		}
-		
-		if (TKVHvk_insertLineBreak)
-		{
-			TKVHvk_fragment.appendChild(document.createElement("br"))
-			
-			console.log("linebreak inserted... done");
-		}
-		
-		if (TKVHvk_insertEnterShift)
-		{	
-			const TKVHvk_enter = document.createElement("button")
-			TKVHvk_fragment.appendChild(TKVHvk_enter)
-			TKVHvk_enter.id = "TKVHvk_keyEnter"; 
-			TKVHvk_enter.setAttribute("type","button");
-			var TKVHvk_imgEnter = document.createElement("img");
-			TKVHvk_enter.appendChild(TKVHvk_imgEnter);
-			TKVHvk_imgEnter.src = 'images/round_keyboard_return_white_18dp.png';
-			TKVHvk_imgEnter.classList.add("TKVHvk_iconKeyboard");
-			
-			console.log("enter inserted...done");
-			
-			TKVHvk_fragment.appendChild(document.createElement("br"))
-			const TKVHvk_shift = document.createElement("button")
-			TKVHvk_fragment.appendChild(TKVHvk_shift)
-			TKVHvk_shift.id = "TKVHvk_keyUpper"; 
-			TKVHvk_shift.setAttribute("type","button");
-			var TKVHvk_imgShift = document.createElement("img");
-			TKVHvk_shift.appendChild(TKVHvk_imgShift);
-			TKVHvk_imgShift.src = 'images/keyboard_capslock_white_192x192.png';
-			TKVHvk_imgShift.classList.add("TKVHvk_iconKeyboard");
-			
-			console.log("shift inserted...done");
-		}
-		if (TKVHvk_insertSpace)
-		{
-			const TKVHvk_space = document.createElement("button");
-			TKVHvk_fragment.appendChild(TKVHvk_space);
-			TKVHvk_space.id = "TKVHvk_keySpaceBar"; 	
-			TKVHvk_space.setAttribute("type","button");
-			var TKVHvk_imgSpace = document.createElement("img");
-			TKVHvk_space.appendChild(TKVHvk_imgSpace);
-			TKVHvk_imgSpace.src = 'images/space-bar.png';
-			TKVHvk_imgSpace.classList.add("TKVHvk_iconKeyboard");
-			console.log("space inserted...done");
-		}
-	})
-	
-	TKVHvk_keysContainer.appendChild(TKVHvk_fragment);
-	TKVHvk_setDefaultKeys();
-		
-	//TKVHvk_addCssFile('TKVHvk_Keyboard.css');
-	var classTKVHvk_keyboard = document.getElementsByClassName("TKVHvk_keyboard");
-	for (var i=0; i<classTKVHvk_keyboard.length; i++)
-	{
-		classTKVHvk_keyboard[i].setAttribute("style", "position:fixed; left:0; bottom:-100%; width:100%; padding:2em 0; background:black; user-select:none; transition:bottom 0.4s; height:45vh; ");
-	}
-	 
-	/*var classTKVHvk_keyboardHidden = document.getElementsByClassName("TKVHvk_keyboardHidden");
-	for (var i=0; i<classTKVHvk_keyboardHidden.length; i++)
-	{
-		classTKVHvk_keyboardHidden[i].setAttribute("style", "bottom:-100%;");
-	}*/
-	
-	var classTKVHvk_keysContainer = document.getElementsByClassName("TKVHvk_keysContainer");
-	for (var i=0; i<classTKVHvk_keysContainer.length; i++)
-	{
-		classTKVHvk_keysContainer[i].setAttribute("style", "text-align: center; z-index: 999;");
-	}
-	
-	var classTKVHvk_keysContainer_buttons = classTKVHvk_keysContainer[0].getElementsByTagName("button");
-	for (var i=0; i<classTKVHvk_keysContainer_buttons.length; i++)
-	{
-		classTKVHvk_keysContainer_buttons[i].setAttribute("style", "height: 2.5em;width: 1.7em;margin: 3px;border-radius: 4px;border: none;background: rgba(255, 255, 255, 0.2);color: #ffffff;font-size: 0.7em;outline: none;cursor: pointer;display: inline-flex;align-items: center;justify-content: center;vertical-align: top;padding: 0;-webkit-tap-highlight-color: transparent;position: relative;z-index: 999;");
-	}
-	
-	var classTKVHvk_iconKeyboard = document.getElementsByClassName("TKVHvk_iconKeyboard");
-	for (var i=0; i<classTKVHvk_iconKeyboard.length; i++)
-	{
-		classTKVHvk_iconKeyboard[i].setAttribute("style", "width:1em;height:1.3em;z-index: 999;");
-	}
-	document.getElementById("TKVHvk_keySpaceBar").setAttribute("style", "height: 2.5em;margin: 3px;border-radius: 4px;border: none;background: rgba(255, 255, 255, 0.2);color: #ffffff;font-size: 0.7em;outline: none;cursor: pointer;display: inline-flex;align-items: center;justify-content: center;vertical-align: top;padding: 0;-webkit-tap-highlight-color: transparent;position: relative;max-width:100%;width:15em;z-index: 999;")
-
-
-	document.getElementById("TKVHvk_keyboard").addEventListener("mousedown", function(clicked) {clicked.preventDefault();console.log("default prevented");});
-
-
-	document.getElementById("TKVHvk_keyBackSpace").addEventListener("mousedown", TKVHvk_keyErase);
-	document.getElementById("TKVHvk_keyEnter").addEventListener("mousedown", TKVHvk_keyEnter);
-	document.getElementById("TKVHvk_keyUpper").addEventListener("click", TKVHvk_keyShift);
-	document.getElementById("TKVHvk_keySpaceBar").addEventListener("mousedown", TKVHvk_keySpace);		
-	
-	
-	
-	TKVHvk_detectInputTexts();
-	console.log("preparing write listener ...");
-	for (var i=0; i<z.length; i++) 
-	{
-		z[i].index = i;
-		z[i].addEventListener("mousedown", TKVHvk_keyWrite);
-		console.log("adding write listener...");
-	}
-	console.log("adding write listener ... done");
-}
-
 function TKVHvk_keyWrite() 
 {	
 	console.log("trying to write...");									//not working in mozilla temporary extension mode
@@ -312,23 +161,45 @@ function TKVHvk_keyShift()
 
 function TKVHvk_keyboardCloser()
 {
-	//document.getElementById("TKVHvk_keyboard").classList.toggle("TKVHvk_keyboardHidden");
-	var classTKVHvk_keyboard = document.getElementsByClassName("TKVHvk_keyboard");
-	for (var i=0; i<classTKVHvk_keyboard.length; i++)
-	{
-		classTKVHvk_keyboard[i].setAttribute("style", "position:fixed; left:0; bottom:-100%; width:100%; padding:2em 0; background:black; user-select:none; transition:bottom 0.4s; height:45vh;z-index:999; ");
-		console.log("closing keyboard");
-	}
+	document.getElementById("TKVHvk_keyboard").remove();
 }
 
 function TKVHvk_keyboardOpener()
 {
-	var classTKVHvk_keyboard = document.getElementsByClassName("TKVHvk_keyboard");
-	for (var i=0; i<classTKVHvk_keyboard.length; i++)
+	const TKVHvk_fragment = document.createDocumentFragment();
+	const x = TKVHvk_getKeyboardProperties();
+		const z = x[1];	
+	
+	var textOnFocus = this;
+	var textOnFocusPosition = textOnFocus.getBoundingClientRect();
+	
+	console.log(textOnFocusPosition.top, textOnFocusPosition.right, textOnFocusPosition.bottom, textOnFocusPosition.left);
+	
+	textOnFocus.insertAdjacentHTML('afterend', '<div id="TKVHvk_keyboard" class="TKVHvk_keyboard"><div class="TKVHvk_keysContainer"><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" id="TKVHvk_keyBackSpace"><img class="TKVHvk_iconKeyboard" src="images/backspace_white_192x192.png"/></button></br><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button></br><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" id="TKVHvk_keyEnter"><img class="TKVHvk_iconKeyboard" src="images/round_keyboard_return_white_18dp.png" /></button></br><button type="button" id="TKVHvk_keyUpper"><img class="TKVHvk_iconKeyboard" src="images/keyboard_capslock_white_192x192.png" /></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button></br><button type="button" class="TKVHvk_keyButton"></button><button type="button" class="TKVHvk_keyButton"></button><button type="button" id="TKVHvk_keySpaceBar"><img class="TKVHvk_iconKeyboard" src="images/space-bar.png" /></button><button type="button" class="TKVHvk_keyButton"></button></div><div>');
+	var keyboard = document.getElementById("TKVHvk_keyboard");
+	
+	TKVHvk_setStyle();
+	keyboard.style.top = textOnFocusPosition.bottom + "px"  ; 
+	keyboard.style.left = textOnFocusPosition.left + "px" ; 
+	
+	
+	keyboard.addEventListener("mousedown", function(clicked) {clicked.preventDefault();console.log("default prevented");});
+	document.getElementById("TKVHvk_keyBackSpace").addEventListener("mousedown", TKVHvk_keyErase);
+	document.getElementById("TKVHvk_keyEnter").addEventListener("mousedown", TKVHvk_keyEnter);
+	document.getElementById("TKVHvk_keyUpper").addEventListener("click", TKVHvk_keyShift);
+	document.getElementById("TKVHvk_keySpaceBar").addEventListener("mousedown", TKVHvk_keySpace);
+	
+	TKVHvk_setDefaultKeys();
+		
+	
+	console.log("preparing write listener ...");
+	for (var i=0; i<z.length; i++) 
 	{
-		classTKVHvk_keyboard[i].setAttribute("style", "position:fixed; left:0; bottom:0; width:100%; padding:2em 0; background:black; user-select:none; transition:bottom 0.4s; height:45vh;z-index:999; ");
-		console.log("opening keyboard");
+		z[i].index = i;
+		z[i].addEventListener("mousedown", TKVHvk_keyWrite);
+		console.log("adding write listener...");
 	}
+	console.log("adding write listener ... done");
 }
 
 function TKVHvk_keyEnter() 
@@ -351,6 +222,33 @@ function TKVHvk_keyEnter()
 	}, 100);
 	document.addEventListener("mouseup", function(){
     if (timer) clearInterval(timer)});
+}
+
+function TKVHvk_setStyle()
+{
+	var classTKVHvk_keyboard = document.getElementsByClassName("TKVHvk_keyboard");
+	for (var i=0; i<classTKVHvk_keyboard.length; i++)
+	{
+		classTKVHvk_keyboard[i].setAttribute("style", " position:fixed; padding:1em 1em; background:black; user-select:none; z-index: 999999999;");
+	}	
+	var classTKVHvk_keysContainer = document.getElementsByClassName("TKVHvk_keysContainer");
+	for (var i=0; i<classTKVHvk_keysContainer.length; i++)
+	{
+		classTKVHvk_keysContainer[i].setAttribute("style", "text-align: center;");
+	}
+
+	var classTKVHvk_keysContainer_buttons = classTKVHvk_keysContainer[0].getElementsByTagName("button");
+	for (var i=0; i<classTKVHvk_keysContainer_buttons.length; i++)
+	{
+		classTKVHvk_keysContainer_buttons[i].setAttribute("style", "height: 2.5em;width: 1.7em;margin: 0.1em 0.2em;border-radius: 4px;border: none;background: rgba(255, 255, 255, 0.2);color: #ffffff;font-size: 0.6em;outline: none;cursor: pointer;display: inline-flex;align-items: center;justify-content: center;vertical-align: top;padding: 0;-webkit-tap-highlight-color: transparent;position: relative;");
+	}
+
+	var classTKVHvk_iconKeyboard = document.getElementsByClassName("TKVHvk_iconKeyboard");
+	for (var i=0; i<classTKVHvk_iconKeyboard.length; i++)
+	{
+		classTKVHvk_iconKeyboard[i].setAttribute("style", "width:1em;height:1.3em;");
+	}
+	document.getElementById("TKVHvk_keySpaceBar").setAttribute("style", "height: 2.5em;margin: 3px;border-radius: 4px;border: none;background: rgba(255, 255, 255, 0.2);color: #ffffff;font-size: 0.7em;outline: none;cursor: pointer;display: inline-flex;align-items: center;justify-content: center;vertical-align: top;padding: 0;-webkit-tap-highlight-color: transparent;position: relative;max-width:100%;width:15em;")
 }
 
 /*function TKVHvk_addCssFile(fileName) 

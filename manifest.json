@@ -9,7 +9,7 @@
 	  "all_frames": true,
       "matches": ["<all_urls>"],
       "js": ["TKVHvk_Keyboard.js"],
-	  "run_at": "document_end"
+	  "run_at": "document_start"
     }
 	],
 	"permissions": [
